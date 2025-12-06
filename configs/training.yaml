@@ -1,0 +1,68 @@
+# Training configuration for recipe generation
+# This config focuses on training a fine-tuned model
+
+# Model configuration
+model:
+  model_name: "gpt2-medium"  # Use larger model for better quality
+  learning_rate: 3e-5
+  weight_decay: 0.01
+  warmup_steps: 200
+  max_length: 512
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 50
+  repetition_penalty: 1.1
+
+# Training configuration
+training:
+  max_epochs: 20
+  batch_size: 4  # Smaller batch size for larger model
+  gradient_clip_val: 1.0
+  accumulate_grad_batches: 4
+  precision: "16-mixed"
+  accelerator: "auto"
+  devices: 1
+  val_check_interval: 0.5  # Check validation every 0.5 epochs
+  
+# Data configuration
+data:
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  max_length: 512
+  batch_size: 4
+  num_workers: 2
+  pin_memory: true
+
+# Logging configuration
+logging:
+  type: "wandb"
+  project: "recipe-generation-training"
+  name: "recipe-model-medium"
+  log_dir: "./logs"
+
+# Output configuration
+output:
+  checkpoint_dir: "./checkpoints"
+  sample_dir: "./assets/samples"
+  model_dir: "./models"
+  
+# Evaluation configuration
+evaluation:
+  compute_bert_score: true
+  save_plots: true
+  plot_dir: "./assets/plots"
+  
+# Sampling configuration
+sampling:
+  num_samples: 10
+  temperature: 0.8
+  top_p: 0.9
+  top_k: 50
+  repetition_penalty: 1.1
+  max_length: 400
+  sampling_strategy: "nucleus"
+
+# Reproducibility
+seed: 42
+deterministic: true
